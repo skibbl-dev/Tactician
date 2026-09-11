@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://byhgupa2b0gyy"]
+
+[ext_resource type="Script" uid="uid://cgep1odm5nrif" path="res://addons/tactician/grid/object/grid_object.gd" id="1_nxctn"]
+[ext_resource type="Script" uid="uid://00nf5wgfm13u" path="res://addons/tactician/grid/object/grid_move.gd" id="2_pfs8s"]
+[ext_resource type="Texture2D" uid="uid://f7artxpt1h3" path="res://bee_spritesheet.png" id="3_pfs8s"]
+
+[node name="GridObject" type="Node2D" unique_id=274359888]
+script = ExtResource("1_nxctn")
+object_mask = 2147483649
+
+[node name="GridMove" type="Node" parent="." unique_id=248756253]
+script = ExtResource("2_pfs8s")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1363376461]
+position = Vector2(0, -5)
+texture = ExtResource("3_pfs8s")
+hframes = 4
+vframes = 2
+
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=341681760]
+modulate = Color(18.892157, 18.892157, 18.892157, 1)
+scale = Vector2(0.125, 0.125)
+texture = ExtResource("3_pfs8s")
+hframes = 4
+vframes = 2
