@@ -2,9 +2,6 @@
 class_name HexTacticsGrid
 extends TacticsGrid
 
-func _ready() -> void:
-	super()
-
 func get_adjacent_tiles(tile:Vector2i) -> Array[Vector2i]:
 	return [
 		tile + Vector2i(+1, 0), tile + Vector2i(+1, -1), tile + Vector2i(0, -1), 

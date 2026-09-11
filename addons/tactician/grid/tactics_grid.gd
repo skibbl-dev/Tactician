@@ -8,15 +8,6 @@ static var INSTNACE:TacticsGrid
 func _enter_tree() -> void:
 	INSTNACE = self
 
-func _ready() -> void:
-	#serialize_map()
-	
-	# var start = Time.get_ticks_usec()
-	for tile in get_paths_within_distance(Vector2i(5,5), 100)[Vector2i(70,5)]:
-		set_cell(tile,0,Vector2i(13,2))
-	# var end = Time.get_ticks_usec()
-	# print( "Paths calculated in: " + str((end-start)/1000000.0) + "s")
-
 # PATHFINDING
 func get_paths_within_distance(start:Vector2i, walk:int, use_move_costs:bool = true, ignore_walls:bool = false) -> Dictionary[Vector2i,Array]:
 	var came_from: Dictionary[Vector2i, Vector2i]
