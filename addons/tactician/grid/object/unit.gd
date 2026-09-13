@@ -1,6 +1,7 @@
+@icon("res://addons/tactician/icons/unit.png")
 extends GridObject
 
-# What the object ignores when looking for walls
+## What the object ignores when looking for walls
 @export_flags_2d_navigation() var object_mask: int
 var object_masks: Array[int]
 
@@ -18,22 +19,23 @@ var move_to:Vector2i
 
 signal finished_moving
 
-func _ready() -> void:
+func _object_ready() -> void:
 	super()
 	
 	for shift in range(32):
-		var mask = 1 << shift+1
+		var mask = 1 << shift
 		if object_mask & mask != 0 :
 			object_masks.append( (log(mask) / log(2)) + 1 )
+	 
+	print(object_masks)
 	
 	DEBUG_ready_for_next()
-
 
 var possible_paths:Dictionary[Vector2i,Array]
 func DEBUG_ready_for_next():
 	$MoveTilemap.global_position = Vector2.ZERO
 	$MoveTilemap.clear()
-	possible_paths = grid.get_paths_within_distance(grid_position,move_range)
+	possible_paths = grid.get_paths_within_distance(grid_position,move_range,object_masks)
 	
 	for cell in possible_paths:
 		$MoveTilemap.set_cell(cell,0,Vector2i(12,2))

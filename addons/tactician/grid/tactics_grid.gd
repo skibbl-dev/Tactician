@@ -2,6 +2,8 @@
 class_name TacticsGrid
 extends TileMapLayer
 
+@onready var object_manager: ObjectManager = $"../ObjectManager"
+
 var map:Dictionary[Vector2i,Vector2i]
 static var INSTNACE:TacticsGrid
 
@@ -9,12 +11,15 @@ func _enter_tree() -> void:
 	INSTNACE = self
 
 # PATHFINDING
-func get_paths_within_distance(start:Vector2i, walk:int, use_move_costs:bool = true, ignore_walls:bool = false) -> Dictionary[Vector2i,Array]:
+func get_paths_within_distance(start:Vector2i, walk:int, masks:Array[int] = [], use_move_costs:bool = true, ignore_walls:bool = false, remove_occupants:bool = true) -> Dictionary[Vector2i,Array]:
 	var came_from: Dictionary[Vector2i, Vector2i]
 	var cost_so_far: Dictionary[Vector2i, int]
 	
 	#var current_tile:Vector2i = start
 	cost_so_far[start] = 0
+	
+	if remove_occupants or !ignore_walls:
+		object_manager.update_lookup_table()
 	
 	# get all walkable tiles, and update the flow field
 	for current_tile in cost_so_far:
@@ -34,6 +39,7 @@ func get_paths_within_distance(start:Vector2i, walk:int, use_move_costs:bool = t
 				if(move_cost == -1): move_cost = 1# if we want to bypass walls, treat a wall as a 1
 			else:
 				if(move_cost == -1): continue # dont add walls!
+				if(object_manager.lookup_wall(tile, masks)): continue # dont add walls!
 			
 			if cost_so_far.has(tile):
 				old_cost = cost_so_far[tile]
@@ -41,7 +47,6 @@ func get_paths_within_distance(start:Vector2i, walk:int, use_move_costs:bool = t
 			else:
 				new_cost = cost_so_far[current_tile] + move_cost + 1
 				old_cost = new_cost + 1
-			
 			
 			if(new_cost > walk): continue # dont walk past the distance we were allocated
 			
@@ -53,6 +58,9 @@ func get_paths_within_distance(start:Vector2i, walk:int, use_move_costs:bool = t
 	var best_paths: Dictionary[Vector2i, Array]
 	
 	for tile in came_from:
+		if remove_occupants:
+			if object_manager.lookup_occupied(tile):
+				continue
 		var current_tile:Vector2i = tile
 		var current_array:Array[Vector2i] = []
 		while cost_so_far[current_tile] > 0: #repeat until we make it back to the very first tile
