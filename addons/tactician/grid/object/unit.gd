@@ -26,8 +26,6 @@ func _object_ready() -> void:
 		var mask = 1 << shift
 		if object_mask & mask != 0 :
 			object_masks.append( (log(mask) / log(2)) + 1 )
-	 
-	print(object_masks)
 	
 	DEBUG_ready_for_next()
 

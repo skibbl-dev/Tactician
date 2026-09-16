@@ -6,8 +6,9 @@ var objects:Array[GridObject]
 var lookup_table:Dictionary[Vector2i, Array]
 
 func _ready() -> void:
-	objects.append_array(find_children("", "GridObject"))
-	for object in objects:
+	
+	for object in find_children("", "GridObject"):
+		objects.append(object)
 		object._object_ready()
 
 func get_objects(tile: Vector2i) -> Array[GridObject]:
